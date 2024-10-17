@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtHello).run {
             setOnClickListener {
                 text = "Hi, World!"
+                //
             }
         }
 
