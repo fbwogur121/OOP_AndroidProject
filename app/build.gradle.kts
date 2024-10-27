@@ -33,9 +33,15 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    viewBinding{
+        enable = true
+    }
 }
 
 dependencies {
+
+    // fragment dependencies
+    implementation("androidx.fragment:fragment-ktx:1.8.4")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
