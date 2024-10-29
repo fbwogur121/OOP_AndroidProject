@@ -5,18 +5,30 @@ import android.renderscript.ScriptGroup.Input
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.myhiapplication.databinding.ActivityMainBinding
 
+val String.numOfKoreanCharacters : Int
+    get(){
+        var count = 0
+        for ( i in 0 until length){
+            if( this[i]>=0xAC00.toChar() && this[i]<=0xD7AF.toChar() ){
+                count += 1
+            }
+        }
+        return count
+    }
+
 class MainActivity : AppCompatActivity() {
+
+    var text: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater).apply {
-
-        }
+        val binding = ActivityMainBinding.inflate(layoutInflater)
 
         fun replaceFragment(frag: Fragment) {
             // Fragment 설정
@@ -31,8 +43,12 @@ class MainActivity : AppCompatActivity() {
                 replaceFragment(InputFragment.newInstance())
             }
             btnResult.setOnClickListener {
-                replaceFragment(ResultFragment.newInstance(100))
+                replaceFragment(ResultFragment.newInstance(text?.numOfKoreanCharacters ?: 0))
             }
+        }
+
+        supportFragmentManager.setFragmentResultListener("input_text", this) { _, bundle ->
+            text = bundle.getString("input")
         }
 
         replaceFragment(InputFragment.newInstance())
